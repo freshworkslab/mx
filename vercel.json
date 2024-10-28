@@ -2,14 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.js",  // or "api/index.js" if using an API route structure
+      "src": "index.js", // Ensure this points to the actual main file
       "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.js" // Adjust if using a different entry point like "pages/index.js"
     }
   ]
 }
