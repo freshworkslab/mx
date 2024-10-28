@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "app.js", // Ensure this points to the actual main file
+      "src": "app.js",
       "use": "@vercel/node"
     }
   ]
