@@ -80,7 +80,7 @@ const emailProviders = [
 
 // Add help articles for DNS hosting providers
 const helpArticles = {
-    'Amazon Web Services (AWS)': 'https://docs.aws.amazon.com/AmazonRoute53/latest/DeveloperGuide/ResourceRecords.html',
+    'Amazon Web Services (AWS)': 'https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/ResourceRecordTypes.html#CNAMEFormat',
     'Cloudflare': 'https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/',
     'DigitalOcean': 'https://www.digitalocean.com/docs/networking/dns/how-to/manage-dns-records/',
     'GoDaddy': 'https://www.godaddy.com/help/add-an-a-record-680',
