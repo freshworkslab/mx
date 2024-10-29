@@ -65,6 +65,7 @@ button:hover {
 /* Layout */
 .page-layout {
   display: flex;
+  flex-direction: row-reverse; /* Move sidebar to the right */
   min-height: 100vh;
   max-width: 1400px;
   margin: 0 auto;
@@ -83,6 +84,7 @@ button:hover {
   position: sticky;
   top: 1rem;
 }
+
 
 .main-content {
   flex: 1;
