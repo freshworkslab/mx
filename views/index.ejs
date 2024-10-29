@@ -7,107 +7,127 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Email and DNS Hosting Provider Lookup</h1>
-    
-    <form action="/lookup" method="POST" class="lookup-form">
-      <div class="input-group">
-        <label for="input">Enter an email address or domain name:</label>
-        <input 
-          type="text" 
-          name="input" 
-          id="input" 
-          placeholder="e.g., user@example.com or example.com" 
-          required
-          autocomplete="off"
-        >
+  <div class="page-layout">
+    <!-- Left sidebar with useful links -->
+    <div class="sidebar">
+      <div class="useful-links">
+        <h2>Useful Resources</h2>
+        <% Object.entries(usefulLinks).forEach(([category, links]) => { %>
+          <div class="link-category">
+            <h3><%= category %></h3>
+            <ul>
+              <% links.forEach(link => { %>
+                <li>
+                  <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer">
+                    <%= link.title %>
+                  </a>
+                  <p class="link-description"><%= link.description %></p>
+                </li>
+              <% }); %>
+            </ul>
+          </div>
+        <% }); %>
       </div>
-      <button type="submit">Find Provider</button>
-    </form>
+    </div>
 
-    <% if (error) { %>
-      <div class="error-message">
-        <p>Error: <%= error %></p>
+    <!-- Main content -->
+    <div class="main-content">
+      <div class="container">
+        <h1>Email and DNS Hosting Provider Lookup</h1>
+        
+        <form action="/lookup" method="POST" class="lookup-form">
+          <div class="input-group">
+            <label for="input">Enter an email address or domain name:</label>
+            <input 
+              type="text" 
+              name="input" 
+              id="input" 
+              placeholder="e.g., user@example.com or example.com" 
+              required
+              autocomplete="off"
+            >
+          </div>
+          <button type="submit">Find Provider</button>
+        </form>
+
+        <% if (error) { %>
+          <div class="error-message">
+            <p>Error: <%= error %></p>
+          </div>
+        <% } else if (provider || provider === "Email service provider unavailable") { %>
+          <div class="results-container">
+            <h2>Primary Email Provider</h2>
+            <div class="provider-card primary">
+              <% if (provider === "Email service provider unavailable") { %>
+                <p class="provider-name"><strong>Email service provider unavailable</strong></p>
+              <% } else { %>
+                <p class="provider-name"><%= provider %></p>
+              <% } %>
+            </div>
+            <% if (possibleProviders && possibleProviders.length > 1) { %>
+              <h3>Possible Additional Providers</h3>
+              <ul>
+                <% possibleProviders.forEach(function(p) { %>
+                  <li><%= p %></li>
+                <% }); %>
+              </ul>
+            <% } %>
+            <h3>MX Records</h3>
+            <% if (mxRecords && mxRecords.length > 0) { %>
+              <ul>
+                <% mxRecords.forEach(function(mx) { %>
+                  <li><%= mx %></li>
+                <% }); %>
+              </ul>
+            <% } else { %>
+              <p>No MX records available.</p>
+            <% } %>
+            <h3>SPF Record</h3>
+            <% if (spfRecord) { %>
+              <p><%= spfRecord %></p>
+            <% } else { %>
+              <p>No SPF record available.</p>
+            <% } %>
+            <h3>DMARC Record</h3>
+            <% if (dmarcRecord) { %>
+              <p><%= dmarcRecord %></p>
+            <% } else { %>
+              <p>No DMARC record available.</p>
+            <% } %>
+            <h3>Name Servers</h3>
+            <% if (nsRecords && nsRecords.length > 0) { %>
+              <ul>
+                <% nsRecords.forEach(function(ns) { %>
+                  <li><%= ns %></li>
+                <% }); %>
+              </ul>
+            <% } else { %>
+              <p>No name servers available.</p>
+            <% } %>
+            <h3>Registrar</h3>
+            <% if (registrar) { %>
+              <p><%= registrar %></p>
+            <% } else { %>
+              <p>No registrar information available.</p>
+            <% } %>
+            <h3>DNS Hosting Providers</h3>
+            <ul>
+              <% if (dnsHostingInfo && dnsHostingInfo.length > 0) { %>
+                <% dnsHostingInfo.split('<br>').forEach(function(provider) { %>
+                  <li><%= provider %>
+                    <% if (helpArticles[provider]) { %>
+                      <a href="<%= helpArticles[provider] %>" target="_blank">Help Article</a>
+                    <% } %>
+                  </li>
+                <% }); %>
+              <% } else { %>
+                <li>No DNS hosting information available.</li>
+              <% } %>
+            </ul>
+          </div>
+        <% } %>
       </div>
-    <% } else if (provider || provider === "Email service provider unavailable") { %>
-      <div class="results-container">
-        <h2>Primary Email Provider</h2>
-        <div class="provider-card primary">
-          <% if (provider === "Email service provider unavailable") { %>
-            <p class="provider-name"><strong>Email service provider unavailable</strong></p>
-          <% } else { %>
-            <p class="provider-name"><%= provider %></p>
-          <% } %>
-        </div>
-
-        <% if (possibleProviders && possibleProviders.length > 1) { %>
-          <h3>Possible Additional Providers</h3>
-          <ul>
-            <% possibleProviders.forEach(function(p) { %>
-              <li><%= p %></li>
-            <% }); %>
-          </ul>
-        <% } %>
-
-        <h3>MX Records</h3>
-        <% if (mxRecords && mxRecords.length > 0) { %>
-          <ul>
-            <% mxRecords.forEach(function(mx) { %>
-              <li><%= mx %></li>
-            <% }); %>
-          </ul>
-        <% } else { %>
-          <p>No MX records available.</p>
-        <% } %>
-
-        <h3>SPF Record</h3>
-        <% if (spfRecord) { %>
-          <p><%= spfRecord %></p>
-        <% } else { %>
-          <p>No SPF record available.</p>
-        <% } %>
-
-        <h3>DMARC Record</h3>
-        <% if (dmarcRecord) { %>
-          <p><%= dmarcRecord %></p>
-        <% } else { %>
-          <p>No DMARC record available.</p>
-        <% } %>
-
-        <h3>Name Servers</h3>
-        <% if (nsRecords && nsRecords.length > 0) { %>
-          <ul>
-            <% nsRecords.forEach(function(ns) { %>
-              <li><%= ns %></li>
-            <% }); %>
-          </ul>
-        <% } else { %>
-          <p>No name servers available.</p>
-        <% } %>
-
-        <h3>Registrar</h3>
-        <% if (registrar) { %>
-          <p><%= registrar %></p>
-        <% } else { %>
-          <p>No registrar information available.</p>
-        <% } %>
-
-        <h3>DNS Hosting Providers</h3>
-        <ul>
-          <% if (dnsHostingInfo && dnsHostingInfo.length > 0) { %>
-            <% dnsHostingInfo.split('<br>').forEach(function(provider) { %>
-              <li><%= provider %>
-                <% if (helpArticles[provider]) { %>
-                  <a href="<%= helpArticles[provider] %>" target="_blank">Help Article</a>
-                <% } %>
-              </li>
-            <% }); %>
-          <% } else { %>
-            <li>No DNS hosting information available.</li>
-          <% } %>
-        </ul>
-      </div>
-    <% } %>
+    </div>
   </div>
 </body>
 </html>
