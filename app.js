@@ -123,6 +123,24 @@ const helpArticles = {
     'Wix.com': 'https://support.wix.com/en/article/managing-dns-records-in-your-wix-account',
 };
 
+// Add useful links section
+const usefulLinks = {
+    'DNS Tools': [
+        { name: 'MXToolbox', url: 'https://mxtoolbox.com/', description: 'Comprehensive DNS and email testing tools' },
+        { name: 'Google Admin Toolbox', url: 'https://toolbox.googleapps.com/apps/checkmx/', description: 'Check MX record configuration' },
+        { name: 'DNS Checker', url: 'https://dnschecker.org/', description: 'Global DNS propagation checker' }
+    ],
+    'Email Security': [
+        { name: 'DMARC Guide', url: 'https://dmarc.org/overview/', description: 'DMARC implementation guide' },
+        { name: 'SPF Record Testing', url: 'https://www.spf-record.com/', description: 'Test and validate SPF records' },
+        { name: 'DKIM Core', url: 'https://dkim.org/', description: 'DKIM implementation resources' }
+    ],
+    'Domain Management': [
+        { name: 'ICANN Lookup', url: 'https://lookup.icann.org/', description: 'Official ICANN domain lookup' },
+        { name: 'SSL Labs', url: 'https://www.ssllabs.com/ssltest/', description: 'SSL/TLS configuration testing' }
+    ]
+};
+
 // Route for the home page (GET)
 app.get('/', (req, res) => {
     res.render('index', {
@@ -134,6 +152,8 @@ app.get('/', (req, res) => {
         nsRecords: [],
         dnsHostingInfo: [],
         error: null
+        helpArticles,
+        usefulLinks // Add useful links to the rendered view
     });
 });
 
@@ -158,6 +178,7 @@ app.post('/lookup', async (req, res) => {
             dnsHostingInfo: hostingProviders,
             registrar,
             helpArticles, // Pass help articles to the view
+            usefulLinks, // Add useful links to the rendered view
             error: emailResult.error || null
         });
     } catch (error) {
@@ -171,6 +192,7 @@ app.post('/lookup', async (req, res) => {
             dnsHostingInfo: [],
             registrar: 'Unknown',
             helpArticles, // Pass help articles to the view
+            usefulLinks, // Add useful links to the rendered view
             error: `Error processing request: ${error.message}`
         });
     }
