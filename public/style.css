@@ -153,3 +153,8 @@ button:hover {
     width: 100%;
   }
 }
+.link-url {
+  color: #666;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
