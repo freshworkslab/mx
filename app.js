@@ -143,7 +143,7 @@ const usefulLinks = {
 
 // Route for the home page (GET)
 app.get('/', (req, res) => {
-    res.render('index', {
+    const viewData = {
         provider: null,
         possibleProviders: [],
         mxRecords: [],
@@ -151,10 +151,11 @@ app.get('/', (req, res) => {
         dmarcRecord: null,
         nsRecords: [],
         dnsHostingInfo: [],
-        error: null
-        helpArticles,
-        usefulLinks // Add useful links to the rendered view
-    });
+        error: null,
+        helpArticles: helpArticles,
+        usefulLinks: usefulLinks
+    };
+    res.render('index', viewData);
 });
 
 // Route to handle form submission for DNS hosting provider lookup
@@ -168,7 +169,7 @@ app.post('/lookup', async (req, res) => {
         const registrar = await fetchRegistrar(domain);
         const hostingProviders = nameServers.map(ns => fetchHostingProvider(ns)).join('<br>');
 
-        return res.render('index', {
+        const viewData = {
             provider: emailResult.primaryProvider,
             possibleProviders: emailResult.possibleProviders,
             mxRecords: emailResult.mxRecords,
@@ -176,13 +177,14 @@ app.post('/lookup', async (req, res) => {
             dmarcRecord: emailResult.dmarcRecord,
             nsRecords: nameServers,
             dnsHostingInfo: hostingProviders,
-            registrar,
-            helpArticles, // Pass help articles to the view
-            usefulLinks, // Add useful links to the rendered view
+            registrar: registrar,
+            helpArticles: helpArticles,
+            usefulLinks: usefulLinks,
             error: emailResult.error || null
-        });
+        };
+        return res.render('index', viewData);
     } catch (error) {
-        return res.render('index', {
+        const errorViewData = {
             provider: null,
             possibleProviders: [],
             mxRecords: [],
@@ -191,10 +193,11 @@ app.post('/lookup', async (req, res) => {
             nsRecords: [],
             dnsHostingInfo: [],
             registrar: 'Unknown',
-            helpArticles, // Pass help articles to the view
-            usefulLinks, // Add useful links to the rendered view
+            helpArticles: helpArticles,
+            usefulLinks: usefulLinks,
             error: `Error processing request: ${error.message}`
-        });
+        };
+        return res.render('index', errorViewData);
     }
 });
 
