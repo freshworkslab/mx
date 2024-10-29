@@ -59,3 +59,95 @@ button:hover {
   background-color: #ffebee;
   color: #c62828;
 }
+
+/* Add these new styles to your existing CSS */
+
+/* Layout */
+.page-layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  height: fit-content;
+  position: sticky;
+  top: 1rem;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0; /* Prevents flex item from overflowing */
+}
+
+/* Useful links styles */
+.useful-links h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.link-category {
+  margin-bottom: 2rem;
+}
+
+.link-category h3 {
+  color: #444;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+.link-category ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-category li {
+  margin-bottom: 1rem;
+}
+
+.link-category a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.link-category a:hover {
+  text-decoration: underline;
+}
+
+.link-description {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .page-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    position: static;
+  }
+  
+  .main-content {
+    width: 100%;
+  }
+}
