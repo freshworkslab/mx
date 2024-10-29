@@ -233,9 +233,12 @@ async function getEmailProvider(domain) {
     // Process email provider based on MX records
     for (const { pattern, name, aliases = [] } of emailProviders) {
         const patterns = [pattern, ...aliases].map(p => p.toLowerCase());
-        if (patterns.some(p => mxRecordNames.some(record => record.includes(p)))) {
+        
+        // Check if MX record strictly matches one of the provider's patterns or aliases
+        if (patterns.some(p => mxRecordNames.some(record => record === p || record.endsWith(`.${p}`)))) {
             if (!primaryProvider) primaryProvider = name;
             possibleProviders.add(name);
+            break;  // Stop checking once primary provider is found
         }
     }
 
@@ -283,8 +286,6 @@ async function getEmailProvider(domain) {
         dmarcRecord: dmarcRecord || 'DMARC record not found'
     };
 }
-
-
 
 const hostingProvidersMap = {
     'awsdns': 'Amazon Web Services (AWS)',
